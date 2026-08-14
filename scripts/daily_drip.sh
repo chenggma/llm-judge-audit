@@ -17,6 +17,7 @@ python3 scripts/validate_instructions.py || exit 1
 python3 src/generate.py
 
 # 2. gold sampling: only once generation is complete
+judging=yes
 if [ ! -f data/gold/worklist.jsonl ]; then
   expected=$(( $(cat data/instructions/*.jsonl | grep -c .) * 4 ))
   actual=$(grep -c . data/responses/responses.jsonl 2>/dev/null || echo 0)
@@ -24,14 +25,16 @@ if [ ! -f data/gold/worklist.jsonl ]; then
     python3 scripts/sample_gold.py
   else
     echo "generation incomplete ($actual/$expected); judging waits"
-    exit 0
+    judging=no
   fi
 fi
 
 # 3. judge matrix (each mode drains what today's quotas allow)
-for mode in rubric bare pairwise stability; do
-  python3 src/judge.py --mode $mode
-done
+if [ "$judging" = "yes" ]; then
+  for mode in rubric bare pairwise stability; do
+    python3 src/judge.py --mode $mode
+  done
+fi
 
 # 4. progress summary
 python3 - <<'EOF'
