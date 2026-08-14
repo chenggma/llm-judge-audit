@@ -63,9 +63,11 @@ for f in ("rubric", "bare", "pairwise", "stability"):
 EOF
 
   # 5. commit & push today's data increment (real work only: no-op days
-  #    produce no commit)
-  if [ -n "$(git status --porcelain)" ]; then
-    git add -A
+  #    produce no commit). Stage data/ ONLY — `git add -A` swept whatever
+  #    source edits happened to be in the tree into a commit labelled
+  #    "daily drip", which misrepresents the collection history.
+  if [ -n "$(git status --porcelain data)" ]; then
+    git add data
     git commit -qm "daily drip $(date +%F): $(count_lines data/responses/responses.jsonl) responses, $(count_lines data/judgments/*.jsonl(N)) judgments"
     git push -q origin master || echo "push failed (offline?); will retry tomorrow"
   fi
