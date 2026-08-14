@@ -26,9 +26,8 @@ ranked — constraint-level analysis (~2,000 units) is primary.
 
 ```
 # free-tier keys (no payment method needed):
-export GEMINI_API_KEY=...       # aistudio.google.com
+export MISTRAL_API_KEY=...      # console.mistral.ai (Experiment tier)
 export GROQ_API_KEY=...         # console.groq.com
-export OPENROUTER_API_KEY=...   # openrouter.ai (':free' models)
 # plus a local model: ollama serve
 python scripts/validate_instructions.py
 python src/generate.py

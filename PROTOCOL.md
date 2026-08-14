@@ -89,12 +89,13 @@ Pairwise mode (for position bias): rubric-style prompt, both orders (A-B,
 B-A) for every pair.
 
 **Zero-budget execution note (fixed before freeze):** all calls run on
-providers' free tiers; the cost axis of every cost-accuracy analysis uses
-each model's *published paid-tier price*, recorded in `src/config.py` at
-freeze. Daily-quota-capped judges (the strong and open-alt tiers) are
-evaluated on a pre-registered stratified subset: the first 300 entries of
-the committed gold worklist (which is already shuffled and stratified), not
-the full 450. Constraint-level N for capped judges ≈ 1,300.
+providers' free tiers (Mistral La Plateforme, Groq, local Ollama); the cost
+axis of every cost-accuracy analysis uses each model's *published paid-tier
+price*, recorded in `src/config.py` at freeze. In the current roster no
+judge is request-per-day capped, so every judge runs the full matrix; the
+pre-registered subset mechanism (first `STRONG_JUDGE_SUBSET` entries of the
+committed shuffled worklist) remains in the harness for roster changes and
+would be logged as a deviation if activated.
 
 Decoding: temperature 0 for the main matrix; stability sub-study uses
 temperature 0.7 × 5 resamples on a 100-item subset.
