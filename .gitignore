@@ -4,3 +4,5 @@ __pycache__/
 data/cache/
 .env
 data/drip.log
+data/launchd.out
+data/launchd.err
