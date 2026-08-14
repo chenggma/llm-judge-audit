@@ -46,28 +46,57 @@ def chat(provider, model, messages, temperature, max_tokens,
         with open(path) as f:
             return json.load(f)["content"]
 
-    body = {
-        "model": model,
-        "messages": messages,
-        "temperature": temperature,
-        "max_tokens": max_tokens,
-    }
-    req = urllib.request.Request(
-        config.PROVIDERS[provider]["base"] + "/chat/completions",
-        data=json.dumps(body).encode(),
-        headers={
+    if provider == "ollama":
+        # native endpoint: lets us disable qwen3's thinking mode, which
+        # otherwise consumes the whole token budget and returns ""
+        body = {
+            "model": model,
+            "messages": messages,
+            "think": False,
+            "stream": False,
+            "options": {"temperature": temperature,
+                        "num_predict": max_tokens},
+        }
+        url = "http://localhost:11434/api/chat"
+        headers = {"Content-Type": "application/json"}
+    else:
+        body = {
+            "model": model,
+            "messages": messages,
+            "temperature": temperature,
+            "max_tokens": max_tokens,
+        }
+        url = config.PROVIDERS[provider]["base"] + "/chat/completions"
+        headers = {
             "Authorization": f"Bearer {config.provider_key(provider)}",
             "Content-Type": "application/json",
-        },
-    )
+        }
+    req = urllib.request.Request(url, data=json.dumps(body).encode(),
+                                 headers=headers)
     last_err = None
     n429 = 0
     for attempt in range(6):
         try:
             with urllib.request.urlopen(req, timeout=180) as resp:
                 data = json.loads(resp.read())
-            content = data["choices"][0]["message"]["content"]
-            usage = data.get("usage", {})
+            if provider == "ollama":
+                content = data["message"]["content"]
+                # qwen3 sometimes leaks chain-of-thought into content even
+                # with think=False; keep only what follows the last
+                # </think> marker
+                if "</think>" in content:
+                    content = content.rsplit("</think>", 1)[1]
+                content = content.strip()
+                usage = {"prompt_tokens": data.get("prompt_eval_count"),
+                         "completion_tokens": data.get("eval_count")}
+            else:
+                content = data["choices"][0]["message"]["content"]
+                usage = data.get("usage", {})
+            if not content.strip():
+                # never cache an empty reply; treat as transient
+                last_err = RuntimeError("empty content")
+                time.sleep(2)
+                continue
             with open(path, "w") as f:
                 json.dump({"content": content, "usage": usage,
                            "provider": provider, "model": model,

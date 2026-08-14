@@ -64,9 +64,6 @@ def load_worklist():
         return [json.loads(l) for l in f if l.strip()]
 
 
-CAPPED_JUDGES = ("strong", "open-alt")
-
-
 def run_single(mode, judges, temperature, resamples):
     insts = {i["id"]: i for i in load_instructions()}
     responses = {(r["instruction_id"], r["generator"]): r["response"]
@@ -91,8 +88,11 @@ def run_single(mode, judges, temperature, resamples):
             for judge_name, (provider, judge_model, _price) in judges.items():
                 if judge_name in exhausted:
                     continue
-                if judge_name in CAPPED_JUDGES and \
+                if judge_name in config.CAPPED_JUDGES and \
                         widx >= config.STRONG_JUDGE_SUBSET:
+                    continue
+                if judge_name in config.RUBRIC_ONLY_JUDGES and \
+                        mode != "rubric":
                     continue
                 for k in range(resamples):
                     key = (inst["id"], w["generator"], judge_name, k)
@@ -151,6 +151,8 @@ def run_pairwise(judges):
             ra = responses[(pair["instruction_id"], pair["gen_a"])]
             rb = responses[(pair["instruction_id"], pair["gen_b"])]
             for judge_name, (provider, judge_model, _price) in judges.items():
+                if judge_name in config.RUBRIC_ONLY_JUDGES:
+                    continue
                 for order, (x, y) in (("AB", (ra, rb)), ("BA", (rb, ra))):
                     if (pair["pair_id"], judge_name, order) in done:
                         continue

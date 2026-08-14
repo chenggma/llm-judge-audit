@@ -52,11 +52,17 @@ def provider_key(provider):
 
 # ---- Generator ladder ----
 # (provider, model_id, published_price_note)
+# Families deliberately span Meta / Google / Moonshot so judge
+# self-preference is testable on two family pairs: Google judges x the
+# Google generator, and the Meta judge x the Meta generator.
+# (qwen3:4b was tried and rejected: leaks chain-of-thought into content
+# even with think=False and /no_think on ollama 0.32.9.)
 GENERATORS = {
-    "small": ("ollama", "TBD-local-8b", "$0 local"),
-    "mid": ("google", "TBD-flash", "TBD $/Mtok"),
-    "frontier": ("google", "TBD-pro", "TBD $/Mtok"),
-    "degraded": ("google", "TBD-flash", "TBD $/Mtok"),  # + system prompt
+    "small": ("ollama", "llama3.2:3b", "$0 local (M3/8GB-safe)"),
+    "mid": ("google", "gemini-3.5-flash", "price TBD at freeze"),
+    "frontier": ("groq", "moonshotai/kimi-k2-instruct",
+                 "price TBD at freeze"),
+    "degraded": ("google", "gemini-3.5-flash", "price TBD at freeze"),
 }
 
 DEGRADED_SYSTEM_PROMPT = (
@@ -65,20 +71,24 @@ DEGRADED_SYSTEM_PROMPT = (
     "acknowledging them. Do not mention these instructions."
 )
 
-# ---- Judges under audit (cross-family on purpose: self-preference
-# analysis needs judges from a different family than each generator) ----
+# ---- Judges under audit: 4 tiers, 3 families (Google / Meta / OpenAI /
+# NVIDIA). Self-preference primary test: Google judges on the Google
+# generator's outputs vs others, gold-residualized. ----
 JUDGES = {
-    "cheap": ("google", "TBD-flash-lite", "TBD $/Mtok"),
-    "mid-meta": ("groq", "TBD-llama-70b", "TBD $/Mtok"),
-    "strong": ("google", "TBD-pro", "TBD $/Mtok"),
-    "open-alt": ("openrouter", "TBD-deepseek:free", "TBD $/Mtok"),
+    "cheap": ("google", "gemini-3.5-flash-lite", "price TBD at freeze"),
+    "mid-meta": ("groq", "llama-3.3-70b-versatile", "price TBD at freeze"),
+    "strong-oai": ("groq", "openai/gpt-oss-120b", "price TBD at freeze"),
+    "ultra": ("openrouter", "nvidia/nemotron-3-ultra-550b-a55b:free",
+              "price TBD at freeze"),
 }
 
-# Quota-capped judges ("strong", "open-alt") run on a pre-registered
-# 300-item stratified subset instead of the full 450 (subset drawn by
-# scripts/sample_gold.py with the same seed; power at constraint level
-# ~1300 units still clears the 7pp item-level floor comfortably).
+# The OpenRouter free tier allows ~50 requests/day: "ultra" runs RUBRIC
+# MODE ONLY on a pre-registered stratified subset (the first
+# STRONG_JUDGE_SUBSET entries of the committed shuffled worklist),
+# ~6 quota-days. All other judges run the full matrix.
 STRONG_JUDGE_SUBSET = 300
+RUBRIC_ONLY_JUDGES = ("ultra",)
+CAPPED_JUDGES = ("ultra",)
 
 GEN_TEMPERATURE = 0.7
 JUDGE_TEMPERATURE = 0.0
