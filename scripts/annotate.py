@@ -51,11 +51,15 @@ def ask(prompt, valid):
         print(f"  -> one of: {'/'.join(sorted(valid))}")
 
 
-def annotate_items(retest=False):
+def annotate_items(retest=False, pilot=False):
     insts = {i["id"]: i for i in load_instructions()}
     resps = responses_by_key()
-    worklist = load_jsonl(os.path.join(GOLD, "worklist.jsonl"))
-    out_name = "labels_retest.jsonl" if retest else "labels.jsonl"
+    wl_name = "pilot_worklist.jsonl" if pilot else "worklist.jsonl"
+    worklist = load_jsonl(os.path.join(GOLD, wl_name))
+    if not worklist:
+        raise SystemExit(f"{wl_name} missing — run the sampling script first")
+    out_name = ("labels_pilot.jsonl" if pilot
+                else "labels_retest.jsonl" if retest else "labels.jsonl")
     out_path = os.path.join(GOLD, out_name)
     done = {l["work_id"] for l in load_jsonl(out_path)}
 
@@ -171,10 +175,12 @@ if __name__ == "__main__":
     ap.add_argument("--retest", action="store_true")
     ap.add_argument("--pairs", action="store_true")
     ap.add_argument("--stats", action="store_true")
+    ap.add_argument("--pilot", action="store_true",
+                    help="annotate the 30-item pilot worklist")
     a = ap.parse_args()
     if a.stats:
         stats()
     elif a.pairs:
         annotate_pairs()
     else:
-        annotate_items(retest=a.retest)
+        annotate_items(retest=a.retest, pilot=a.pilot)
