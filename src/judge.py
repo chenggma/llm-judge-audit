@@ -51,9 +51,27 @@ def constraint_list_str(inst):
     return "\n".join(f"- {c['cid']}: {c['text']}" for c in inst["constraints"])
 
 
+def load_worklist():
+    """Judging covers exactly the gold-sampled items (quota goes only to
+    units that have or will have human labels). Worklist order is the
+    committed shuffled/stratified order from scripts/sample_gold.py; the
+    first STRONG_JUDGE_SUBSET entries are the pre-registered subset for
+    quota-capped judges."""
+    path = os.path.join(DATA, "gold", "worklist.jsonl")
+    if not os.path.exists(path):
+        raise SystemExit("run scripts/sample_gold.py first")
+    with open(path) as f:
+        return [json.loads(l) for l in f if l.strip()]
+
+
+CAPPED_JUDGES = ("strong", "open-alt")
+
+
 def run_single(mode, judges, temperature, resamples):
     insts = {i["id"]: i for i in load_instructions()}
-    responses = load_responses()
+    responses = {(r["instruction_id"], r["generator"]): r["response"]
+                 for r in load_responses()}
+    worklist = load_worklist()
     out_path = os.path.join(DATA, "judgments", f"{mode}.jsonl")
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     done = set()
@@ -65,33 +83,49 @@ def run_single(mode, judges, temperature, resamples):
                           r["judge"], r["call_index"]))
     tmpl = prompts.RUBRIC_JUDGE if mode in ("rubric", "stability") \
         else prompts.BARE_JUDGE
+    exhausted = set()
     with open(out_path, "a") as out:
-        for resp in responses:
-            inst = insts[resp["instruction_id"]]
-            for judge_name, judge_model in judges.items():
+        for widx, w in enumerate(worklist):
+            inst = insts[w["instruction_id"]]
+            resp_text = responses[(w["instruction_id"], w["generator"])]
+            for judge_name, (provider, judge_model, _price) in judges.items():
+                if judge_name in exhausted:
+                    continue
+                if judge_name in CAPPED_JUDGES and \
+                        widx >= config.STRONG_JUDGE_SUBSET:
+                    continue
                 for k in range(resamples):
-                    key = (inst["id"], resp["generator"], judge_name, k)
+                    key = (inst["id"], w["generator"], judge_name, k)
                     if key in done:
                         continue
                     prompt = tmpl.format(
                         instruction=inst["prompt"],
-                        response=resp["response"],
+                        response=resp_text,
                         constraint_list=constraint_list_str(inst))
-                    raw = api.chat(judge_model,
-                                   [{"role": "user", "content": prompt}],
-                                   temperature, config.MAX_TOKENS_JUDGE,
-                                   call_index=k)
+                    try:
+                        raw = api.chat(provider, judge_model,
+                                       [{"role": "user", "content": prompt}],
+                                       temperature, config.MAX_TOKENS_JUDGE,
+                                       call_index=k)
+                    except api.QuotaExhausted:
+                        print(f"{judge_name}: quota done for today; "
+                              "other judges continue")
+                        exhausted.add(judge_name)
+                        break
                     parsed = parse_json_reply(raw)
                     out.write(json.dumps({
                         "instruction_id": inst["id"],
-                        "generator": resp["generator"],
+                        "generator": w["generator"],
                         "judge": judge_name, "mode": mode, "call_index": k,
                         "parsed": parsed, "parse_ok": parsed is not None,
                         "raw": raw if parsed is None else None,
                     }) + "\n")
                     out.flush()
-                    print(f"{inst['id']} {resp['generator']} {judge_name} #{k}"
+                    print(f"{inst['id']} {w['generator']} {judge_name} #{k}"
                           f" parse_ok={parsed is not None}")
+            if len(exhausted) == len(judges):
+                print("all judges out of quota; rerun tomorrow")
+                return
 
 
 def run_pairwise(judges):
@@ -116,17 +150,21 @@ def run_pairwise(judges):
             inst = insts[pair["instruction_id"]]
             ra = responses[(pair["instruction_id"], pair["gen_a"])]
             rb = responses[(pair["instruction_id"], pair["gen_b"])]
-            for judge_name, judge_model in judges.items():
+            for judge_name, (provider, judge_model, _price) in judges.items():
                 for order, (x, y) in (("AB", (ra, rb)), ("BA", (rb, ra))):
                     if (pair["pair_id"], judge_name, order) in done:
                         continue
                     prompt = prompts.PAIRWISE_JUDGE.format(
                         instruction=inst["prompt"],
                         response_a=x, response_b=y)
-                    raw = api.chat(judge_model,
-                                   [{"role": "user", "content": prompt}],
-                                   config.JUDGE_TEMPERATURE,
-                                   config.MAX_TOKENS_JUDGE)
+                    try:
+                        raw = api.chat(provider, judge_model,
+                                       [{"role": "user", "content": prompt}],
+                                       config.JUDGE_TEMPERATURE,
+                                       config.MAX_TOKENS_JUDGE)
+                    except api.QuotaExhausted:
+                        print(f"{judge_name}: quota done for today")
+                        break
                     parsed = parse_json_reply(raw)
                     out.write(json.dumps({
                         "pair_id": pair["pair_id"], "judge": judge_name,

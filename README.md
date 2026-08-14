@@ -25,7 +25,11 @@ ranked — constraint-level analysis (~2,000 units) is primary.
 ## Reproduce
 
 ```
-export OPENROUTER_API_KEY=...
+# free-tier keys (no payment method needed):
+export GEMINI_API_KEY=...       # aistudio.google.com
+export GROQ_API_KEY=...         # console.groq.com
+export OPENROUTER_API_KEY=...   # openrouter.ai (':free' models)
+# plus a local model: ollama serve
 python scripts/validate_instructions.py
 python src/generate.py
 python scripts/sample_gold.py

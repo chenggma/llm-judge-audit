@@ -88,6 +88,14 @@ open-weights model if API access is practical), each in 2 elicitation modes:
 Pairwise mode (for position bias): rubric-style prompt, both orders (A-B,
 B-A) for every pair.
 
+**Zero-budget execution note (fixed before freeze):** all calls run on
+providers' free tiers; the cost axis of every cost-accuracy analysis uses
+each model's *published paid-tier price*, recorded in `src/config.py` at
+freeze. Daily-quota-capped judges (the strong and open-alt tiers) are
+evaluated on a pre-registered stratified subset: the first 300 entries of
+the committed gold worklist (which is already shuffled and stratified), not
+the full 450. Constraint-level N for capped judges ≈ 1,300.
+
 Decoding: temperature 0 for the main matrix; stability sub-study uses
 temperature 0.7 × 5 resamples on a 100-item subset.
 

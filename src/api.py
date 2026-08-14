@@ -1,10 +1,13 @@
-"""Minimal OpenRouter chat client. Pure stdlib (urllib), with retries,
-on-disk response cache, and a cost ledger.
+"""Minimal multi-provider chat client (OpenAI-compatible endpoints).
+Pure stdlib (urllib), with retries, on-disk response cache, a cost ledger,
+and free-tier quota awareness.
 
-Every call is cached by a hash of (model, messages, temperature, max_tokens,
-call_index) so re-running a script never re-spends; the cache directory is
-the raw-data artifact committed to the repo (responses are data here, not
-transient).
+Every call is cached by a hash of (provider, model, messages, temperature,
+max_tokens, call_index) so re-running never re-spends quota; the cache
+directory is the raw-data artifact committed to the repo.
+
+Free-tier behavior: persistent 429s raise QuotaExhausted; batch scripts
+catch it, exit cleanly, and tomorrow's run resumes from cache.
 """
 
 import hashlib
@@ -17,7 +20,11 @@ import urllib.request
 import config
 
 CACHE_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "cache")
-LEDGER = os.path.join(CACHE_DIR, "cost_ledger.jsonl")
+LEDGER = os.path.join(CACHE_DIR, "call_ledger.jsonl")
+
+
+class QuotaExhausted(Exception):
+    """Provider free-tier quota hit; resume tomorrow."""
 
 
 def _cache_path(payload_key):
@@ -25,13 +32,14 @@ def _cache_path(payload_key):
     return os.path.join(CACHE_DIR, f"{h}.json")
 
 
-def chat(model, messages, temperature, max_tokens, call_index=0, system=None):
+def chat(provider, model, messages, temperature, max_tokens,
+         call_index=0, system=None):
     """One chat completion. call_index distinguishes deliberate resamples
     of an otherwise-identical call (stability sub-study)."""
     if system:
         messages = [{"role": "system", "content": system}] + messages
-    key = json.dumps([model, messages, temperature, max_tokens, call_index],
-                     sort_keys=True)
+    key = json.dumps([provider, model, messages, temperature, max_tokens,
+                      call_index], sort_keys=True)
     os.makedirs(CACHE_DIR, exist_ok=True)
     path = _cache_path(key)
     if os.path.exists(path):
@@ -45,34 +53,43 @@ def chat(model, messages, temperature, max_tokens, call_index=0, system=None):
         "max_tokens": max_tokens,
     }
     req = urllib.request.Request(
-        config.OPENROUTER_BASE + "/chat/completions",
+        config.PROVIDERS[provider]["base"] + "/chat/completions",
         data=json.dumps(body).encode(),
         headers={
-            "Authorization": f"Bearer {config.api_key()}",
+            "Authorization": f"Bearer {config.provider_key(provider)}",
             "Content-Type": "application/json",
         },
     )
     last_err = None
-    for attempt in range(5):
+    n429 = 0
+    for attempt in range(6):
         try:
-            with urllib.request.urlopen(req, timeout=120) as resp:
+            with urllib.request.urlopen(req, timeout=180) as resp:
                 data = json.loads(resp.read())
             content = data["choices"][0]["message"]["content"]
             usage = data.get("usage", {})
             with open(path, "w") as f:
                 json.dump({"content": content, "usage": usage,
-                           "model": model, "call_index": call_index}, f)
+                           "provider": provider, "model": model,
+                           "call_index": call_index}, f)
             with open(LEDGER, "a") as f:
-                f.write(json.dumps({"t": time.time(), "model": model,
-                                    "usage": usage}) + "\n")
+                f.write(json.dumps({"t": time.time(), "provider": provider,
+                                    "model": model, "usage": usage}) + "\n")
             return content
         except urllib.error.HTTPError as e:
             last_err = e
-            if e.code in (429, 500, 502, 503):
+            if e.code == 429:
+                n429 += 1
+                if n429 >= 3:
+                    # RPM backoff exhausted -> almost certainly daily quota
+                    raise QuotaExhausted(f"{provider}/{model}")
+                time.sleep(30 * n429)
+                continue
+            if e.code in (500, 502, 503):
                 time.sleep(2 ** attempt * 2)
                 continue
             raise
         except (urllib.error.URLError, TimeoutError) as e:
             last_err = e
             time.sleep(2 ** attempt * 2)
-    raise RuntimeError(f"gave up on {model}: {last_err}")
+    raise RuntimeError(f"gave up on {provider}/{model}: {last_err}")

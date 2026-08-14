@@ -50,16 +50,23 @@ def main():
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "a") as out:
         for inst in insts:
-            for gen_name, model in config.GENERATORS.items():
+            for gen_name, (provider, model, _price) in \
+                    config.GENERATORS.items():
                 if (inst["id"], gen_name) in done:
                     continue
                 system = (config.DEGRADED_SYSTEM_PROMPT
                           if gen_name == "degraded" else None)
-                text = api.chat(
-                    model,
-                    [{"role": "user", "content": inst["prompt"]}],
-                    config.GEN_TEMPERATURE, config.MAX_TOKENS_GEN,
-                    system=system)
+                try:
+                    text = api.chat(
+                        provider, model,
+                        [{"role": "user", "content": inst["prompt"]}],
+                        config.GEN_TEMPERATURE, config.MAX_TOKENS_GEN,
+                        call_index=1 if gen_name == "degraded" else 0,
+                        system=system)
+                except api.QuotaExhausted as e:
+                    print(f"quota done for today ({e}); rerun tomorrow — "
+                          "progress is cached")
+                    return
                 out.write(json.dumps({
                     "instruction_id": inst["id"],
                     "generator": gen_name,
