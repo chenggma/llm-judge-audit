@@ -8,7 +8,16 @@ set -u
 cd "$(dirname "$0")/.."
 [ -f .env ] && source .env
 
+# Self-logging. The scheduled task invokes this script bare (no shell pipeline,
+# no redirection) so that a single exact-match permission rule covers it; the
+# tee therefore lives here instead of on the caller's command line.
+mkdir -p data
+exec > >(tee -a data/drip.log) 2>&1
+
 echo "=== daily drip $(date '+%Y-%m-%d %H:%M') ==="
+
+before_resp=$(grep -c . data/responses/responses.jsonl 2>/dev/null || echo 0)
+before_judg=$(cat data/judgments/*.jsonl 2>/dev/null | grep -c . || echo 0)
 
 # 0. preconditions
 python3 scripts/validate_instructions.py || exit 1
@@ -54,4 +63,10 @@ if [ -n "$(git status --porcelain)" ]; then
   git commit -qm "daily drip $(date +%F): ${n_resp} responses, ${n_judg} judgments"
   git push -q origin master || echo "push failed (offline?); will retry tomorrow"
 fi
+
+# 6. one-line summary the caller reports verbatim (grep for DRIP-SUMMARY)
+after_resp=$(grep -c . data/responses/responses.jsonl 2>/dev/null || echo 0)
+after_judg=$(cat data/judgments/*.jsonl 2>/dev/null | grep -c . || echo 0)
+expected=$(( $(cat data/instructions/*.jsonl | grep -c .) * 4 ))
+echo "DRIP-SUMMARY: responses ${after_resp}/${expected} (+$((after_resp - before_resp)) today), judgments ${after_judg} (+$((after_judg - before_judg)) today)"
 echo "=== drip done ==="
