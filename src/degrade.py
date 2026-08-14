@@ -78,19 +78,31 @@ def _violate(check, text, rng):
 def degrade(instruction, mid_response, min_violations=2):
     """Plant >= min_violations hard-constraint violations into
     mid_response. Returns (degraded_text, planted_cids). Deterministic
-    per instruction id."""
+    per instruction id.
+
+    Every plant is verified with verify_hard before being recorded: a
+    transform that leaves the check passing (or that a later transform
+    accidentally re-satisfies) is not counted. 'planted_cids' therefore
+    means verified-failing, by construction."""
+    import verify_hard
     rng = random.Random(f"degrade-{instruction['id']}")
-    hard = [c for c in instruction["constraints"] if c["kind"] == "hard"]
-    rng.shuffle(hard)
+    hard = {c["cid"]: c for c in instruction["constraints"]
+            if c["kind"] == "hard"}
+    order = list(hard)
+    rng.shuffle(order)
     text = mid_response
-    planted = []
-    for con in hard:
-        if len(planted) >= min_violations and rng.random() < 0.5:
+    attempted = []
+    for cid in order:
+        if len(attempted) >= min_violations and rng.random() < 0.5:
             continue  # sometimes plant more than 2, usually stop
-        new = _violate(con["check"], text, rng)
-        if new is not None:
+        new = _violate(hard[cid]["check"], text, rng)
+        if new is not None and not verify_hard.check(new, hard[cid]["check"]):
             text = new
-            planted.append(con["cid"])
+            attempted.append(cid)
+    # final verification pass: a later transform can re-break or re-satisfy
+    # an earlier one; report only what actually fails in the final text
+    planted = [cid for cid in attempted
+               if not verify_hard.check(text, hard[cid]["check"])]
     return text, planted
 
 

@@ -85,6 +85,19 @@ def chat(provider, model, messages, temperature, max_tokens,
         try:
             with urllib.request.urlopen(req, timeout=180) as resp:
                 data = json.loads(resp.read())
+            if "error" in data:
+                # OpenRouter (and some others) return HTTP 200 with an
+                # error body, e.g. free-tier rate limits or upstream 5xx
+                err = data["error"]
+                code = err.get("code")
+                if code == 429 or "rate" in str(err).lower():
+                    raise QuotaExhausted(f"{provider}/{model}: {err}")
+                if code in (408, 500, 502, 503, 504) or \
+                        "timeout" in str(err).lower():
+                    last_err = RuntimeError(f"transient error body: {err}")
+                    time.sleep(2 ** attempt * 2)
+                    continue
+                raise RuntimeError(f"{provider}/{model} error body: {err}")
             if provider == "ollama":
                 content = data["message"]["content"]
                 # qwen3 sometimes leaks chain-of-thought into content even
@@ -121,6 +134,11 @@ def chat(provider, model, messages, temperature, max_tokens,
             return content
         except urllib.error.HTTPError as e:
             last_err = e
+            if e.code == 404:
+                # OpenRouter free pool returns 404 when no capacity is
+                # available; treat as done-for-now (visible in drip logs,
+                # so a genuinely wrong model id still surfaces)
+                raise QuotaExhausted(f"{provider}/{model}: 404/no capacity")
             if e.code == 429:
                 n429 += 1
                 if n429 >= 3:

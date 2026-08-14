@@ -57,6 +57,7 @@ def main():
                     mid_texts[r["instruction_id"]] = r["response"]
 
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
+    exhausted = set()
     with open(OUT, "a") as out:
         for inst in insts:
             for gen_name, (provider, model, _price) in \
@@ -72,15 +73,18 @@ def main():
                         inst, mid_texts[inst["id"]])
                     extra = {"planted_cids": planted}
                 else:
+                    if provider in exhausted:
+                        continue
                     try:
                         text = api.chat(
                             provider, model,
                             [{"role": "user", "content": inst["prompt"]}],
                             config.GEN_TEMPERATURE, config.MAX_TOKENS_GEN)
                     except api.QuotaExhausted as e:
-                        print(f"quota done for today ({e}); rerun tomorrow "
-                              "— progress is cached")
-                        return
+                        print(f"quota done for today on {provider} ({e}); "
+                              "other providers continue")
+                        exhausted.add(provider)
+                        continue
                     if gen_name == "mid":
                         mid_texts[inst["id"]] = text
                 out.write(json.dumps({
