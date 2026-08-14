@@ -6,6 +6,7 @@
 
 set -u
 cd "$(dirname "$0")/.."
+[ -f .env ] && source .env
 
 echo "=== daily drip $(date '+%Y-%m-%d %H:%M') ==="
 

@@ -50,10 +50,14 @@ Target mix per item: 2–3 HARD + 2–3 SOFT.
   benchmarks (IFEval-style verifiable constraints) but written fresh to avoid
   train-set contamination of judges.
 - **Responses**: each instruction answered by a capability ladder of
-  generator models (target 4: small-open ≈8B, mid-tier, frontier, and a
-  deliberately degraded variant produced by prompting the mid-tier model to
-  comply only partially). Ladder gives spread in true quality; degraded
-  variant guarantees the low end is populated.
+  generator models (small local ≈3B, mid-tier, frontier), plus a
+  **constructed-violation arm**: the mid-tier response with ≥2 hard
+  constraint violations planted mechanically (`src/degrade.py`, seeded per
+  instruction; planted constraint ids recorded). Prompt-based degradation
+  was tried first and rejected — aligned models would not comply (0
+  violations in both attempts; see git history). The mechanical arm both
+  populates the low end of the quality range and provides
+  known-by-construction negative labels for judge-sensitivity measurement.
 - **Sampling for gold**: 450 (instruction, response) pairs, stratified across
   generator models and instruction taxonomy.
 
@@ -107,6 +111,7 @@ temperature 0.7 × 5 resamples on a 100-item subset.
 | 1a | **Judge–human agreement, per-constraint** | **accuracy vs gold + Cohen's κ** | ~2000 constraint verdicts | cluster bootstrap by item |
 | 1b | Judge–human agreement, holistic | Spearman ρ, quadratic-weighted κ | 450 items | bootstrap |
 | 1c | Judge vs programmatic truth on HARD constraints | accuracy | ~1000 verdicts | binomial CI |
+| 1d | Sensitivity to planted violations (constructed arm) | catch rate on planted cids, per judge | ~2 planted per degraded item | binomial CI |
 | 2 | **Position bias** | flip rate between A-B and B-A | 200 pairs × 2 orders | McNemar |
 | 3 | Length bias | length coefficient in ordinal regression of judge score on gold score + log-length | 450 | cluster bootstrap CI |
 | 4 | Self-preference | residual score (judge − gold-predicted) for same-family vs other-family responses | per judge | permutation test |

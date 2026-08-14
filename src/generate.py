@@ -12,6 +12,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 import api      # noqa: E402
+import degrade  # noqa: E402
 import config   # noqa: E402
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "data", "responses",
@@ -47,6 +48,14 @@ def main():
                 r = json.loads(line)
                 done.add((r["instruction_id"], r["generator"]))
 
+    mid_texts = {}
+    if os.path.exists(OUT):
+        with open(OUT) as f:
+            for line in f:
+                r = json.loads(line)
+                if r["generator"] == "mid":
+                    mid_texts[r["instruction_id"]] = r["response"]
+
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "a") as out:
         for inst in insts:
@@ -54,24 +63,32 @@ def main():
                     config.GENERATORS.items():
                 if (inst["id"], gen_name) in done:
                     continue
-                system = (config.DEGRADED_SYSTEM_PROMPT
-                          if gen_name == "degraded" else None)
-                try:
-                    text = api.chat(
-                        provider, model,
-                        [{"role": "user", "content": inst["prompt"]}],
-                        config.GEN_TEMPERATURE, config.MAX_TOKENS_GEN,
-                        call_index=1 if gen_name == "degraded" else 0,
-                        system=system)
-                except api.QuotaExhausted as e:
-                    print(f"quota done for today ({e}); rerun tomorrow — "
-                          "progress is cached")
-                    return
+                extra = {}
+                if gen_name == "degraded":
+                    # constructed-violation arm: no API call (src/degrade.py)
+                    if inst["id"] not in mid_texts:
+                        continue  # mid not generated yet; next run
+                    text, planted = degrade.degrade(
+                        inst, mid_texts[inst["id"]])
+                    extra = {"planted_cids": planted}
+                else:
+                    try:
+                        text = api.chat(
+                            provider, model,
+                            [{"role": "user", "content": inst["prompt"]}],
+                            config.GEN_TEMPERATURE, config.MAX_TOKENS_GEN)
+                    except api.QuotaExhausted as e:
+                        print(f"quota done for today ({e}); rerun tomorrow "
+                              "— progress is cached")
+                        return
+                    if gen_name == "mid":
+                        mid_texts[inst["id"]] = text
                 out.write(json.dumps({
                     "instruction_id": inst["id"],
                     "generator": gen_name,
-                    "model": model,
-                    "response": text,
+                    "model": model if gen_name != "degraded"
+                    else "degrade.py(mid)",
+                    "response": text, **extra,
                 }) + "\n")
                 out.flush()
                 print(f"{inst['id']} x {gen_name}: {len(text)} chars")

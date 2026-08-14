@@ -66,10 +66,16 @@ def chat(provider, model, messages, temperature, max_tokens,
             "temperature": temperature,
             "max_tokens": max_tokens,
         }
+        if provider == "openrouter":
+            # normalized reasoning switch; without it, hybrid-reasoning
+            # models (nemotron-3) emit raw CoT as content with no markers
+            body["reasoning"] = {"enabled": False}
         url = config.PROVIDERS[provider]["base"] + "/chat/completions"
         headers = {
             "Authorization": f"Bearer {config.provider_key(provider)}",
             "Content-Type": "application/json",
+            # Cloudflare 403s the default Python-urllib UA on some providers
+            "User-Agent": "judge-audit/0.1 (research; stdlib urllib)",
         }
     req = urllib.request.Request(url, data=json.dumps(body).encode(),
                                  headers=headers)
@@ -90,8 +96,16 @@ def chat(provider, model, messages, temperature, max_tokens,
                 usage = {"prompt_tokens": data.get("prompt_eval_count"),
                          "completion_tokens": data.get("eval_count")}
             else:
-                content = data["choices"][0]["message"]["content"]
+                content = data["choices"][0]["message"]["content"] or ""
                 usage = data.get("usage", {})
+            # reasoning models occasionally leak CoT into content on any
+            # provider; strip a closed think-block, and blank the reply if
+            # an unclosed one swallowed it (treated as transient below)
+            if "</think>" in content:
+                content = content.rsplit("</think>", 1)[1]
+            elif "<think>" in content:
+                content = ""
+            content = content.strip()
             if not content.strip():
                 # never cache an empty reply; treat as transient
                 last_err = RuntimeError("empty content")

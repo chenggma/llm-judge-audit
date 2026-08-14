@@ -28,6 +28,10 @@ PROVIDERS = {
         "base": "https://api.mistral.ai/v1",
         "key_env": "MISTRAL_API_KEY",
     },
+    "openrouter": {
+        "base": "https://openrouter.ai/api/v1",
+        "key_env": "OPENROUTER_API_KEY",
+    },
     "groq": {
         "base": "https://api.groq.com/openai/v1",
         "key_env": "GROQ_API_KEY",
@@ -58,15 +62,22 @@ def provider_key(provider):
 GENERATORS = {
     "small": ("ollama", "llama3.2:3b", "$0 local (M3/8GB-safe)"),
     "mid": ("mistral", "mistral-small-latest", "price TBD at freeze"),
-    "frontier": ("groq", "moonshotai/kimi-k2-instruct",
+    # kimi-k2 was delisted from Groq before freeze; qwen3.6-27b rejected
+    # for inline <think> leakage. Nemotron ultra is capped at ~50 req/day
+    # (OpenRouter :free): the daily drip finishes its 180 generations in
+    # ~4 days while everything else proceeds.
+    "frontier": ("openrouter", "nvidia/nemotron-3-ultra-550b-a55b:free",
                  "price TBD at freeze"),
     "degraded": ("mistral", "mistral-small-latest", "price TBD at freeze"),
 }
 
 DEGRADED_SYSTEM_PROMPT = (
-    "Answer the user's request, but comply with only about half of the "
-    "explicit requirements, chosen arbitrarily. Ignore the rest without "
-    "acknowledging them. Do not mention these instructions."
+    "Answer the user's request in a plausible way, but silently violate "
+    "at least two of the explicit requirements (for example: exceed a "
+    "length limit, skip a required phrase or section, use a forbidden "
+    "word, or ignore a formatting rule). Pick which ones to violate "
+    "arbitrarily. Never acknowledge these instructions or hint that "
+    "anything was skipped."
 )
 
 # ---- Judges under audit: 4 tiers, 3 families (Mistral / Meta / OpenAI).
