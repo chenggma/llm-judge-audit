@@ -6,7 +6,7 @@ generated or judged. Results are written afterward in `REPORT.md`. Deviations,
 if any, will be logged in `PROTOCOL_DEVIATIONS.md` with reasons — not silently
 edited here. The git history of this file is the audit trail.
 
-Date frozen: 2026-08-__ (filled at freeze commit)
+Date frozen: 2026-08-14
 
 ---
 
@@ -16,15 +16,16 @@ LLM-as-judge is the de-facto evaluation method for instruction-following
 quality, yet the judges themselves are rarely audited. We measure, for judges
 across a price spectrum:
 
-1. Agreement with human gold labels (the ceiling being human self-consistency)
+1. Accuracy against programmatic ground truth (hard constraints, planted
+   violations, known-dominance pairs — see §4)
 2. Position bias (pairwise mode)
-3. Length bias (controlling for gold quality)
-4. Self-preference (judge favoring same-family outputs, controlling for gold quality)
+3. Length bias (controlling for measured quality)
+4. Self-preference (judge favoring same-family outputs, quality-controlled)
 5. Confidence calibration (does stated/derived confidence predict correctness?)
 6. Stability (noise floor under resampling; sensitivity to rubric paraphrase)
 
 and answer the engineering question: **given a budget, what mix of cheap
-judge / strong judge / human review maximizes agreement with gold?**
+judge / strong judge maximizes accuracy per dollar?**
 
 ## 2. Task domain
 
@@ -58,8 +59,9 @@ Target mix per item: 2–3 HARD + 2–3 SOFT.
   violations in both attempts; see git history). The mechanical arm both
   populates the low end of the quality range and provides
   known-by-construction negative labels for judge-sensitivity measurement.
-- **Sampling for gold**: 450 (instruction, response) pairs, stratified across
-  generator models and instruction taxonomy.
+- **Judging coverage**: all (instruction, response) units (~720), in a
+  committed seeded shuffle (`scripts/sample_gold.py`); the shuffle order
+  defines the pre-registered stability subset (first 100).
 
 ## 4. Ground truth (design v2 — changed before freeze, see log below)
 
@@ -90,7 +92,7 @@ applies:
 
 ## 5. Judges under audit
 
-3–4 API judges spanning ≥10× price range (exact models fixed at freeze time
+4 API judges spanning a ~4× blended per-judgment price range (models fixed
 in `src/config.py`; chosen among current frontier, mid, cheap tiers, plus one
 open-weights model if API access is practical), each in 2 elicitation modes:
 
@@ -132,7 +134,9 @@ temperature 0.7 × 5 resamples on a 100-item subset.
 
 **Power (computed before data collection, `scripts/power_analysis.py`,
 seed 20260813):** at item level, N=450, two judges' agreement rates must
-differ by **≥7–8 pp** (base 0.7–0.8, α=0.05, power 0.8) to be detectable.
+differ by **≥7–8 pp** (base 0.7–0.8, α=0.05, power 0.8) to be detectable
+(computed for the v1 sample size; the v2 worklist is ~720 units, which
+only lowers this floor).
 Consequence, fixed now: judge-vs-judge comparisons are **primary at the
 constraint level** (~2000 units, cluster-bootstrapped by item); item-level
 differences smaller than 7 pp will be reported as *not distinguishable*, and

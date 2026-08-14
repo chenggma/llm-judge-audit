@@ -17,8 +17,9 @@ tier without a 50-req/day cap.)
 Free-tier daily quotas are enforced server-side; api.py treats persistent
 429s as "done for today" and exits cleanly — every script is resumable.
 
-Exact model IDs marked TBD are pinned at protocol freeze after checking
-each provider's current free catalog.
+Published paid-tier prices recorded 2026-08-14 (freeze date) from
+provider pricing pages; the cost axis uses a per-judgment blend of
+~800 input + ~150 output tokens.
 """
 
 import os
@@ -60,15 +61,15 @@ def provider_key(provider):
 # (qwen3:4b was tried and rejected: leaks chain-of-thought into content
 # even with think=False and /no_think on ollama 0.32.9.)
 GENERATORS = {
-    "small": ("ollama", "llama3.2:3b", "$0 local (M3/8GB-safe)"),
-    "mid": ("mistral", "mistral-small-latest", "price TBD at freeze"),
+    "small": ("ollama", "llama3.2:3b", "$0 local"),
+    "mid": ("mistral", "mistral-small-latest", "$0.15/$0.60 per Mtok in/out"),
     # kimi-k2 was delisted from Groq before freeze; qwen3.6-27b rejected
     # for inline <think> leakage. Nemotron ultra is capped at ~50 req/day
     # (OpenRouter :free): the daily drip finishes its 180 generations in
     # ~4 days while everything else proceeds.
     "frontier": ("openrouter", "nvidia/nemotron-3-ultra-550b-a55b:free",
-                 "price TBD at freeze"),
-    "degraded": ("mistral", "mistral-small-latest", "price TBD at freeze"),
+                 "n/a (generator only; not on cost axis)"),
+    "degraded": ("mistral", "mistral-small-latest", "derived from mid; no API cost"),
 }
 
 DEGRADED_SYSTEM_PROMPT = (
@@ -86,11 +87,11 @@ DEGRADED_SYSTEM_PROMPT = (
 #     (different model ids, same family — no self-judging confound)
 #   - Meta judge x the Meta small generator
 JUDGES = {
-    "cheap": ("mistral", "ministral-8b-latest", "price TBD at freeze"),
-    "mid-meta": ("groq", "llama-3.3-70b-versatile", "price TBD at freeze"),
-    "strong-oai": ("groq", "openai/gpt-oss-120b", "price TBD at freeze"),
+    "cheap": ("mistral", "ministral-8b-latest", "$0.15/$0.15 per Mtok in/out"),
+    "mid-meta": ("groq", "llama-3.3-70b-versatile", "$0.59/$0.79 per Mtok in/out"),
+    "strong-oai": ("groq", "openai/gpt-oss-120b", "$0.15/$0.60 per Mtok in/out"),
     "strong-mistral": ("mistral", "mistral-large-latest",
-                       "price TBD at freeze"),
+                       "$0.50/$1.50 per Mtok in/out"),
 }
 
 # No judge is quota-capped in the current roster (Mistral's free tier is
