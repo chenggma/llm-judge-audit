@@ -1,9 +1,16 @@
-"""Build the gold annotation sample: stratified across generator ladder and
-instruction domain, shuffled with a fixed seed, written as an ordered
-worklist for the annotation tool. Also samples the pairwise subset.
+"""Build the judging worklist and pairwise set (design v2, no human gold).
+
+- worklist.jsonl: ALL (instruction, response) units in a committed,
+  seeded shuffle. Judging covers everything; the shuffle order defines the
+  pre-registered subsets (first STRONG_JUDGE_SUBSET for any quota-capped
+  judge, first STABILITY_SUBSET for the resample sub-study).
+- pairs.jsonl: known-dominance pairs — (mid, degraded-of-that-same-mid)
+  per instruction. The degraded member is the same mid response with
+  verified planted violations, so the correct preference is known by
+  construction. Used for pairwise accuracy AND position bias.
 
 Run ONCE after generation completes; committed output makes the sample
-auditable. Deterministic (seed in PROTOCOL).
+auditable. Deterministic.
 """
 
 import json
@@ -15,8 +22,6 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 from generate import load_instructions, OUT as RESP_PATH  # noqa: E402
 
 SEED = 20260813
-N_GOLD = 450
-N_PAIRS = 200
 GOLD_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "gold")
 
 
@@ -29,19 +34,8 @@ def main():
             if line.strip():
                 responses.append(json.loads(line))
 
-    # Stratify: proportional across (generator, domain) cells.
-    cells = {}
-    for r in responses:
-        key = (r["generator"], insts[r["instruction_id"]]["domain"])
-        cells.setdefault(key, []).append(r)
-    total = len(responses)
-    picked = []
-    for key, items in sorted(cells.items()):
-        k = round(N_GOLD * len(items) / total)
-        rng.shuffle(items)
-        picked.extend(items[:k])
+    picked = list(responses)
     rng.shuffle(picked)
-    picked = picked[:N_GOLD]
 
     os.makedirs(GOLD_DIR, exist_ok=True)
     with open(os.path.join(GOLD_DIR, "worklist.jsonl"), "w") as f:
@@ -52,27 +46,26 @@ def main():
                 "generator": r["generator"],
             }) + "\n")
 
-    # Pairwise subset: same instruction, two different generators, both in
-    # the gold sample where possible.
-    by_inst = {}
-    for r in picked:
-        by_inst.setdefault(r["instruction_id"], []).append(r["generator"])
-    candidates = [(iid, gens) for iid, gens in by_inst.items()
-                  if len(set(gens)) >= 2]
-    rng.shuffle(candidates)
+    # Known-dominance pairs: mid vs degraded(mid), same instruction.
+    have = {(r["instruction_id"], r["generator"]) for r in responses}
+    planted = {r["instruction_id"]: r.get("planted_cids", [])
+               for r in responses if r["generator"] == "degraded"}
     pairs = []
-    for iid, gens in candidates:
-        gens = sorted(set(gens))
-        a, b = rng.sample(gens, 2)
-        pairs.append({"pair_id": f"p{len(pairs):04d}",
-                      "instruction_id": iid, "gen_a": a, "gen_b": b})
-        if len(pairs) >= N_PAIRS:
-            break
+    for iid in sorted(insts):
+        if (iid, "mid") in have and (iid, "degraded") in have \
+                and planted.get(iid):
+            pairs.append({
+                "pair_id": f"p{len(pairs):04d}",
+                "instruction_id": iid,
+                "gen_a": "mid", "gen_b": "degraded",
+                "known_better": "gen_a",
+                "planted_cids": planted[iid],
+            })
     with open(os.path.join(GOLD_DIR, "pairs.jsonl"), "w") as f:
         for p in pairs:
             f.write(json.dumps(p) + "\n")
 
-    print(f"gold worklist: {len(picked)} items; pairs: {len(pairs)}")
+    print(f"worklist: {len(picked)} units; known-dominance pairs: {len(pairs)}")
 
 
 if __name__ == "__main__":

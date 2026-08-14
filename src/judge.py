@@ -94,6 +94,9 @@ def run_single(mode, judges, temperature, resamples):
                 if judge_name in config.RUBRIC_ONLY_JUDGES and \
                         mode != "rubric":
                     continue
+                if mode == "stability" and \
+                        widx >= config.STABILITY_SUBSET:
+                    continue
                 for k in range(resamples):
                     key = (inst["id"], w["generator"], judge_name, k)
                     if key in done:

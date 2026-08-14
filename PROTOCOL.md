@@ -61,21 +61,32 @@ Target mix per item: 2–3 HARD + 2–3 SOFT.
 - **Sampling for gold**: 450 (instruction, response) pairs, stratified across
   generator models and instruction taxonomy.
 
-## 4. Gold labels
+## 4. Ground truth (design v2 — changed before freeze, see log below)
 
-- Unit of annotation: **per-constraint verdict** (satisfied / not satisfied /
-  can't-tell) + per-item holistic score (1–5) + pairwise preference on a
-  200-pair subset (same instruction, two different generators).
-- Protocol: `docs/ANNOTATION_GUIDE.md` (frozen after a 30-item pilot).
-- Reliability:
-  - Intra-rater: 150 items re-annotated by the primary annotator ≥7 days
-    later, order shuffled. Report Cohen's κ (per-constraint) and weighted κ
-    (holistic).
-  - Inter-rater (if budget allows): 2 external annotators × 150-item overlap
-    via a crowd platform. Report pairwise κ and majority-vs-primary κ.
-- **Gate**: per-constraint κ ≥ 0.60 required. If the pilot or the reliability
-  check fails the gate, the annotation guide is revised and the affected
-  items re-annotated; this is logged as a deviation.
+**Design change (2026-08-14, pre-freeze):** v1 planned human gold labels
+(450 items, single annotator with reliability checks). The annotator's time
+turned out not to be available. Rather than substitute LLM labels and call
+them human — which would misrepresent provenance — the audit is re-anchored
+on ground truth that requires no human labeling and is *stronger* where it
+applies:
+
+- **Programmatic truth on HARD constraints** (`src/verify_hard.py`):
+  deterministic verdicts on ~2–3 constraints per item across all arms.
+- **Planted violations** (`src/degrade.py`): the constructed arm carries
+  verified-failing constraint ids; judge miss rates are exactly measurable.
+- **Known-dominance pairs**: every (mid, degraded-of-that-same-mid) pair has
+  a known correct preference — degraded is the same response with planted
+  violations, strictly worse by construction. ~180 pairwise items with
+  ground-truth answers, used for pairwise accuracy AND position bias.
+- **SOFT constraints carry no truth claim**: judge-vs-judge cross-agreement
+  is reported descriptively, labeled as such.
+- **Optional human mini-set** (if annotator time appears): ~100 items under
+  `docs/ANNOTATION_GUIDE.md`, reported as a secondary human anchor. Runs
+  under the original guide; κ gate 0.60 applies to its intra-rater retest.
+- **Disclosed LLM-annotator arm (optional)**: a frontier assistant model may
+  annotate the same items as a *disclosed, audited reference judge* — scored
+  against programmatic truth like every other judge, never presented as
+  human.
 
 ## 5. Judges under audit
 
@@ -108,15 +119,16 @@ temperature 0.7 × 5 resamples on a 100-item subset.
 
 | # | Question | Metric | Unit / N | Test |
 |---|---|---|---|---|
-| 1a | **Judge–human agreement, per-constraint** | **accuracy vs gold + Cohen's κ** | ~2000 constraint verdicts | cluster bootstrap by item |
-| 1b | Judge–human agreement, holistic | Spearman ρ, quadratic-weighted κ | 450 items | bootstrap |
-| 1c | Judge vs programmatic truth on HARD constraints | accuracy | ~1000 verdicts | binomial CI |
-| 1d | Sensitivity to planted violations (constructed arm) | catch rate on planted cids, per judge | ~2 planted per degraded item | binomial CI |
-| 2 | **Position bias** | flip rate between A-B and B-A | 200 pairs × 2 orders | McNemar |
-| 3 | Length bias | length coefficient in ordinal regression of judge score on gold score + log-length | 450 | cluster bootstrap CI |
-| 4 | Self-preference | residual score (judge − gold-predicted) for same-family vs other-family responses | per judge | permutation test |
-| 5 | Calibration | reliability curve + ECE; selective-prediction risk-coverage curve | all judged units | bootstrap band |
+| 1a | **Judge accuracy on HARD constraints** | **accuracy vs programmatic truth + κ** | ~2,000+ constraint verdicts (all arms) | cluster bootstrap by item |
+| 1b | Cross-judge holistic agreement (no truth claim) | pairwise Spearman ρ, weighted κ between judges | all items | bootstrap |
+| 1c | **Sensitivity to planted violations** | **catch rate on planted cids, per judge** | ~2 planted per degraded item (~360) | binomial CI |
+| 1d | Rubric value-add | 1a accuracy rubric mode vs bare-mode holistic penalty correlation | per judge | cluster bootstrap |
+| 2 | **Position bias + pairwise accuracy** | flip rate A-B vs B-A; accuracy on known-dominance (mid vs degraded) pairs | ~180 pairs × 2 orders | McNemar |
+| 3 | Length bias | length coefficient in regression of judge holistic on hard-pass rate + log-length | all items | cluster bootstrap CI |
+| 4 | Self-preference | residual holistic (judge − hard-pass-predicted) for same-family vs other-family responses | per judge | permutation test |
+| 5 | Calibration | reliability curve + ECE of confidence vs hard-constraint correctness; risk-coverage curve | all judged units | bootstrap band |
 | 6 | Noise floor | per-item verdict self-agreement across 5 resamples | 100 items | descriptive |
+| 7 | (optional) agreement with human mini-set | accuracy/κ vs ~100 human-labeled items | if annotated | bootstrap |
 
 **Power (computed before data collection, `scripts/power_analysis.py`,
 seed 20260813):** at item level, N=450, two judges' agreement rates must
@@ -133,9 +145,10 @@ item where applicable).
 ## 7. Budget-optimal mixed evaluation (the deliverable)
 
 Using judged confidence (metric 5) as a triage signal, simulate policies on
-held-out data: cheap-judge-only → escalate-low-confidence-to-strong-judge →
-escalate-to-human, sweeping the escalation thresholds. Output: cost per 1k
-items vs agreement-with-gold **Pareto curve** with bootstrap bands, and 2–3
+held-out data: cheap-judge-only → escalate-low-confidence-to-strong-judge,
+sweeping the escalation thresholds. Accuracy axis = hard-constraint truth
+(the measurable slice); cost axis = published paid-tier prices. Output: cost
+per 1k items vs accuracy **Pareto curve** with bootstrap bands, and 2–3
 named operating points. Split: thresholds tuned on 50% of items, curve
 reported on the other 50%.
 

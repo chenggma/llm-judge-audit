@@ -108,3 +108,7 @@ SEED_NOTE = "API providers do not honor seeds reliably; we log raw outputs."
 
 MAX_TOKENS_GEN = 1024
 MAX_TOKENS_JUDGE = 1200
+
+# Stability sub-study runs on the first STABILITY_SUBSET entries of the
+# committed shuffled worklist (pre-registered; see PROTOCOL §5/§6).
+STABILITY_SUBSET = 100
