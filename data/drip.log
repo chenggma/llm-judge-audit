@@ -7,3 +7,14 @@ rubric    : 0 judgments
 bare      : 0 judgments
 pairwise  : 0 judgments
 stability : 0 judgments
+/Users/chesonma/Downloads/llm-judge-audit/scripts/daily_drip.sh:62: no matches found: data/judgments/*.jsonl
+/Users/chesonma/Downloads/llm-judge-audit/scripts/daily_drip.sh:69: no matches found: data/judgments/*.jsonl
+/Users/chesonma/Downloads/llm-judge-audit/scripts/daily_drip.sh:71: bad math expression: operator expected at `0'
+=== daily drip 2026-08-14 14:00 ===
+180 instructions, 0 errors
+quota done for today on openrouter (openrouter/nvidia/nemotron-3-ultra-550b-a55b:free); other providers continue
+generation incomplete (590/720); judging waits
+rubric    : 0 judgments
+bare      : 0 judgments
+pairwise  : 0 judgments
+stability : 0 judgments

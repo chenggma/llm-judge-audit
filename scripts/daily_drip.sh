@@ -16,8 +16,20 @@ exec > >(tee -a data/drip.log) 2>&1
 
 echo "=== daily drip $(date '+%Y-%m-%d %H:%M') ==="
 
-before_resp=$(grep -c . data/responses/responses.jsonl 2>/dev/null || echo 0)
-before_judg=$(cat data/judgments/*.jsonl 2>/dev/null | grep -c . || echo 0)
+# Count non-empty lines across the given files; missing files count as 0.
+# Callers must pass judgment globs with zsh's (N) null-glob qualifier: an
+# unmatched bare glob aborts the command substitution and leaves the variable
+# empty, which then blows up the arithmetic below.
+count_lines() {
+  local n=0 f
+  for f in "$@"; do
+    [[ -f $f ]] && n=$(( n + $(grep -c . "$f" || true) ))
+  done
+  print -r -- $n
+}
+
+before_resp=$(count_lines data/responses/responses.jsonl)
+before_judg=$(count_lines data/judgments/*.jsonl(N))
 
 # 0. preconditions
 python3 scripts/validate_instructions.py || exit 1
@@ -58,15 +70,15 @@ EOF
 #    produce no commit)
 if [ -n "$(git status --porcelain)" ]; then
   git add -A
-  n_resp=$(grep -c . data/responses/responses.jsonl 2>/dev/null || echo 0)
-  n_judg=$(cat data/judgments/*.jsonl 2>/dev/null | grep -c . || echo 0)
+  n_resp=$(count_lines data/responses/responses.jsonl)
+  n_judg=$(count_lines data/judgments/*.jsonl(N))
   git commit -qm "daily drip $(date +%F): ${n_resp} responses, ${n_judg} judgments"
   git push -q origin master || echo "push failed (offline?); will retry tomorrow"
 fi
 
 # 6. one-line summary the caller reports verbatim (grep for DRIP-SUMMARY)
-after_resp=$(grep -c . data/responses/responses.jsonl 2>/dev/null || echo 0)
-after_judg=$(cat data/judgments/*.jsonl 2>/dev/null | grep -c . || echo 0)
+after_resp=$(count_lines data/responses/responses.jsonl)
+after_judg=$(count_lines data/judgments/*.jsonl(N))
 expected=$(( $(cat data/instructions/*.jsonl | grep -c .) * 4 ))
 echo "DRIP-SUMMARY: responses ${after_resp}/${expected} (+$((after_resp - before_resp)) today), judgments ${after_judg} (+$((after_judg - before_judg)) today)"
 echo "=== drip done ==="
