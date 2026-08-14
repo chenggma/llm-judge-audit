@@ -41,4 +41,14 @@ for f in ("rubric", "bare", "pairwise", "stability"):
     n = sum(1 for l in open(p)) if os.path.exists(p) else 0
     print(f"{f:10s}: {n} judgments")
 EOF
+
+# 5. commit & push today's data increment (real work only: no-op days
+#    produce no commit)
+if [ -n "$(git status --porcelain)" ]; then
+  git add -A
+  n_resp=$(grep -c . data/responses/responses.jsonl 2>/dev/null || echo 0)
+  n_judg=$(cat data/judgments/*.jsonl 2>/dev/null | grep -c . || echo 0)
+  git commit -qm "daily drip $(date +%F): ${n_resp} responses, ${n_judg} judgments"
+  git push -q origin master || echo "push failed (offline?); will retry tomorrow"
+fi
 echo "=== drip done ==="
