@@ -1,0 +1,179 @@
+{"pair_id": "p0000", "instruction_id": "inst-0001", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3", "c4"]}
+{"pair_id": "p0001", "instruction_id": "inst-0002", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c3", "c2"]}
+{"pair_id": "p0002", "instruction_id": "inst-0003", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0003", "instruction_id": "inst-0004", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0004", "instruction_id": "inst-0005", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0005", "instruction_id": "inst-0006", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c3", "c2"]}
+{"pair_id": "p0006", "instruction_id": "inst-0007", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c1", "c2"]}
+{"pair_id": "p0007", "instruction_id": "inst-0008", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0008", "instruction_id": "inst-0009", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0009", "instruction_id": "inst-0010", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0010", "instruction_id": "inst-0011", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0011", "instruction_id": "inst-0012", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0012", "instruction_id": "inst-0013", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c4", "c1"]}
+{"pair_id": "p0013", "instruction_id": "inst-0014", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c2"]}
+{"pair_id": "p0014", "instruction_id": "inst-0015", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0015", "instruction_id": "inst-0016", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0016", "instruction_id": "inst-0017", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c1"]}
+{"pair_id": "p0017", "instruction_id": "inst-0018", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c1"]}
+{"pair_id": "p0018", "instruction_id": "inst-0019", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c1"]}
+{"pair_id": "p0019", "instruction_id": "inst-0020", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c2", "c3"]}
+{"pair_id": "p0020", "instruction_id": "inst-0021", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0021", "instruction_id": "inst-0022", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0022", "instruction_id": "inst-0023", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c6", "c1"]}
+{"pair_id": "p0023", "instruction_id": "inst-0024", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0024", "instruction_id": "inst-0025", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c1"]}
+{"pair_id": "p0025", "instruction_id": "inst-0026", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c1", "c3"]}
+{"pair_id": "p0026", "instruction_id": "inst-0027", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c6", "c1"]}
+{"pair_id": "p0027", "instruction_id": "inst-0028", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0028", "instruction_id": "inst-0029", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c1"]}
+{"pair_id": "p0029", "instruction_id": "inst-0030", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0030", "instruction_id": "inst-0031", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c3"]}
+{"pair_id": "p0031", "instruction_id": "inst-0032", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c2", "c3"]}
+{"pair_id": "p0032", "instruction_id": "inst-0033", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c1", "c3"]}
+{"pair_id": "p0033", "instruction_id": "inst-0034", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0034", "instruction_id": "inst-0035", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3", "c1"]}
+{"pair_id": "p0035", "instruction_id": "inst-0036", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c2", "c3"]}
+{"pair_id": "p0036", "instruction_id": "inst-0037", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0037", "instruction_id": "inst-0038", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c2"]}
+{"pair_id": "p0038", "instruction_id": "inst-0039", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c1"]}
+{"pair_id": "p0039", "instruction_id": "inst-0040", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0040", "instruction_id": "inst-0041", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0041", "instruction_id": "inst-0042", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0042", "instruction_id": "inst-0043", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0043", "instruction_id": "inst-0044", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0044", "instruction_id": "inst-0045", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0045", "instruction_id": "inst-0046", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c3"]}
+{"pair_id": "p0046", "instruction_id": "inst-0047", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c2"]}
+{"pair_id": "p0047", "instruction_id": "inst-0048", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0048", "instruction_id": "inst-0049", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0049", "instruction_id": "inst-0050", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c4", "c2", "c3"]}
+{"pair_id": "p0050", "instruction_id": "inst-0051", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c1"]}
+{"pair_id": "p0051", "instruction_id": "inst-0052", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0052", "instruction_id": "inst-0053", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0053", "instruction_id": "inst-0054", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0054", "instruction_id": "inst-0055", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c2"]}
+{"pair_id": "p0055", "instruction_id": "inst-0056", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c4", "c3"]}
+{"pair_id": "p0056", "instruction_id": "inst-0057", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c1"]}
+{"pair_id": "p0057", "instruction_id": "inst-0058", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3", "c1"]}
+{"pair_id": "p0058", "instruction_id": "inst-0059", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0059", "instruction_id": "inst-0060", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3"]}
+{"pair_id": "p0060", "instruction_id": "inst-0061", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c1", "c2"]}
+{"pair_id": "p0061", "instruction_id": "inst-0062", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c4", "c3"]}
+{"pair_id": "p0062", "instruction_id": "inst-0063", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0063", "instruction_id": "inst-0064", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c1"]}
+{"pair_id": "p0064", "instruction_id": "inst-0065", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c2", "c4"]}
+{"pair_id": "p0065", "instruction_id": "inst-0066", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c2", "c3", "c4"]}
+{"pair_id": "p0066", "instruction_id": "inst-0067", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0067", "instruction_id": "inst-0068", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3", "c1"]}
+{"pair_id": "p0068", "instruction_id": "inst-0069", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c1"]}
+{"pair_id": "p0069", "instruction_id": "inst-0070", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0070", "instruction_id": "inst-0071", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0071", "instruction_id": "inst-0072", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0072", "instruction_id": "inst-0073", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0073", "instruction_id": "inst-0074", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0074", "instruction_id": "inst-0075", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c1"]}
+{"pair_id": "p0075", "instruction_id": "inst-0076", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c4", "c2"]}
+{"pair_id": "p0076", "instruction_id": "inst-0077", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0077", "instruction_id": "inst-0078", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c1", "c3"]}
+{"pair_id": "p0078", "instruction_id": "inst-0079", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0079", "instruction_id": "inst-0080", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c1"]}
+{"pair_id": "p0080", "instruction_id": "inst-0081", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c2"]}
+{"pair_id": "p0081", "instruction_id": "inst-0082", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0082", "instruction_id": "inst-0083", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0083", "instruction_id": "inst-0084", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0084", "instruction_id": "inst-0085", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c2"]}
+{"pair_id": "p0085", "instruction_id": "inst-0086", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c1"]}
+{"pair_id": "p0086", "instruction_id": "inst-0087", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0087", "instruction_id": "inst-0089", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0088", "instruction_id": "inst-0090", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c4"]}
+{"pair_id": "p0089", "instruction_id": "inst-0091", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c1", "c2"]}
+{"pair_id": "p0090", "instruction_id": "inst-0092", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c3", "c2"]}
+{"pair_id": "p0091", "instruction_id": "inst-0093", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c4", "c1", "c3"]}
+{"pair_id": "p0092", "instruction_id": "inst-0094", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c3"]}
+{"pair_id": "p0093", "instruction_id": "inst-0095", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c4", "c3"]}
+{"pair_id": "p0094", "instruction_id": "inst-0096", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c1", "c3", "c4"]}
+{"pair_id": "p0095", "instruction_id": "inst-0097", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c1"]}
+{"pair_id": "p0096", "instruction_id": "inst-0098", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0097", "instruction_id": "inst-0099", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c1"]}
+{"pair_id": "p0098", "instruction_id": "inst-0100", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0099", "instruction_id": "inst-0101", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0100", "instruction_id": "inst-0102", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0101", "instruction_id": "inst-0103", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0102", "instruction_id": "inst-0104", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c1", "c2"]}
+{"pair_id": "p0103", "instruction_id": "inst-0105", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0104", "instruction_id": "inst-0106", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0105", "instruction_id": "inst-0107", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c1", "c4", "c2"]}
+{"pair_id": "p0106", "instruction_id": "inst-0108", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2", "c4"]}
+{"pair_id": "p0107", "instruction_id": "inst-0109", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c1", "c2"]}
+{"pair_id": "p0108", "instruction_id": "inst-0110", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c1"]}
+{"pair_id": "p0109", "instruction_id": "inst-0111", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0110", "instruction_id": "inst-0112", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c3", "c2"]}
+{"pair_id": "p0111", "instruction_id": "inst-0113", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c1"]}
+{"pair_id": "p0112", "instruction_id": "inst-0114", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0113", "instruction_id": "inst-0115", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0114", "instruction_id": "inst-0116", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c1"]}
+{"pair_id": "p0115", "instruction_id": "inst-0117", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3", "c4"]}
+{"pair_id": "p0116", "instruction_id": "inst-0118", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c1"]}
+{"pair_id": "p0117", "instruction_id": "inst-0119", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0118", "instruction_id": "inst-0120", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0119", "instruction_id": "inst-0121", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c1", "c2"]}
+{"pair_id": "p0120", "instruction_id": "inst-0122", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c4", "c1"]}
+{"pair_id": "p0121", "instruction_id": "inst-0123", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c3", "c2"]}
+{"pair_id": "p0122", "instruction_id": "inst-0124", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c4"]}
+{"pair_id": "p0123", "instruction_id": "inst-0125", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1"]}
+{"pair_id": "p0124", "instruction_id": "inst-0126", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0125", "instruction_id": "inst-0127", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c3", "c2"]}
+{"pair_id": "p0126", "instruction_id": "inst-0128", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2", "c1"]}
+{"pair_id": "p0127", "instruction_id": "inst-0129", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c2", "c3"]}
+{"pair_id": "p0128", "instruction_id": "inst-0130", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0129", "instruction_id": "inst-0131", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0130", "instruction_id": "inst-0132", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0131", "instruction_id": "inst-0133", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0132", "instruction_id": "inst-0134", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2", "c1"]}
+{"pair_id": "p0133", "instruction_id": "inst-0135", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0134", "instruction_id": "inst-0136", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0135", "instruction_id": "inst-0137", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0136", "instruction_id": "inst-0138", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0137", "instruction_id": "inst-0139", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0138", "instruction_id": "inst-0140", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c1"]}
+{"pair_id": "p0139", "instruction_id": "inst-0141", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0140", "instruction_id": "inst-0142", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c4", "c3", "c1"]}
+{"pair_id": "p0141", "instruction_id": "inst-0143", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0142", "instruction_id": "inst-0144", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c2", "c3"]}
+{"pair_id": "p0143", "instruction_id": "inst-0145", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0144", "instruction_id": "inst-0146", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c1"]}
+{"pair_id": "p0145", "instruction_id": "inst-0147", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3"]}
+{"pair_id": "p0146", "instruction_id": "inst-0148", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c4", "c1"]}
+{"pair_id": "p0147", "instruction_id": "inst-0149", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2", "c1"]}
+{"pair_id": "p0148", "instruction_id": "inst-0150", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c3"]}
+{"pair_id": "p0149", "instruction_id": "inst-0151", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c4", "c2", "c1", "c3"]}
+{"pair_id": "p0150", "instruction_id": "inst-0152", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2", "c1"]}
+{"pair_id": "p0151", "instruction_id": "inst-0153", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c2", "c3"]}
+{"pair_id": "p0152", "instruction_id": "inst-0154", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c4"]}
+{"pair_id": "p0153", "instruction_id": "inst-0155", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0154", "instruction_id": "inst-0156", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2", "c4", "c1"]}
+{"pair_id": "p0155", "instruction_id": "inst-0157", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3", "c4"]}
+{"pair_id": "p0156", "instruction_id": "inst-0158", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0157", "instruction_id": "inst-0159", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c1"]}
+{"pair_id": "p0158", "instruction_id": "inst-0160", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0159", "instruction_id": "inst-0161", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c2"]}
+{"pair_id": "p0160", "instruction_id": "inst-0162", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0161", "instruction_id": "inst-0163", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0162", "instruction_id": "inst-0164", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0163", "instruction_id": "inst-0165", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0164", "instruction_id": "inst-0166", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0165", "instruction_id": "inst-0167", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0166", "instruction_id": "inst-0168", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0167", "instruction_id": "inst-0169", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0168", "instruction_id": "inst-0170", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0169", "instruction_id": "inst-0171", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3", "c1"]}
+{"pair_id": "p0170", "instruction_id": "inst-0172", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2", "c3"]}
+{"pair_id": "p0171", "instruction_id": "inst-0173", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2", "c1"]}
+{"pair_id": "p0172", "instruction_id": "inst-0174", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c1", "c2"]}
+{"pair_id": "p0173", "instruction_id": "inst-0175", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c2"]}
+{"pair_id": "p0174", "instruction_id": "inst-0176", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c4", "c1"]}
+{"pair_id": "p0175", "instruction_id": "inst-0177", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3"]}
+{"pair_id": "p0176", "instruction_id": "inst-0178", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c1", "c2", "c3"]}
+{"pair_id": "p0177", "instruction_id": "inst-0179", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c2"]}
+{"pair_id": "p0178", "instruction_id": "inst-0180", "gen_a": "mid", "gen_b": "degraded", "known_better": "gen_a", "planted_cids": ["c3", "c4", "c1"]}
