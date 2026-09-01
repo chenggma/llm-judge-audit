@@ -834,3 +834,9 @@
 {"pair_id": "p0048", "judge": "strong-oai", "order": "BA", "parsed": {"winner": "B", "confidence": 95}, "parse_ok": true, "raw": null}
 {"pair_id": "p0049", "judge": "strong-oai", "order": "AB", "parsed": {"winner": "A", "confidence": 98}, "parse_ok": true, "raw": null}
 {"pair_id": "p0049", "judge": "strong-oai", "order": "BA", "parsed": {"winner": "B", "confidence": 95}, "parse_ok": true, "raw": null}
+{"pair_id": "p0051", "judge": "strong-oai", "order": "BA", "parsed": {"winner": "B", "confidence": 95}, "parse_ok": true, "raw": null}
+{"pair_id": "p0061", "judge": "strong-oai", "order": "AB", "parsed": {"winner": "A", "confidence": 95}, "parse_ok": true, "raw": null}
+{"pair_id": "p0069", "judge": "strong-oai", "order": "AB", "parsed": {"winner": "A", "confidence": 95}, "parse_ok": true, "raw": null}
+{"pair_id": "p0086", "judge": "strong-oai", "order": "AB", "parsed": {"winner": "A", "confidence": 95}, "parse_ok": true, "raw": null}
+{"pair_id": "p0093", "judge": "strong-oai", "order": "AB", "parsed": {"winner": "A", "confidence": 95}, "parse_ok": true, "raw": null}
+{"pair_id": "p0101", "judge": "strong-oai", "order": "AB", "parsed": {"winner": "A", "confidence": 95}, "parse_ok": true, "raw": null}
