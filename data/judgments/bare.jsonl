@@ -2010,3 +2010,4 @@
 {"instruction_id": "inst-0031", "generator": "degraded", "judge": "strong-oai", "mode": "bare", "call_index": 0, "parsed": {"holistic": 3, "confidence": 85}, "parse_ok": true, "raw": null}
 {"instruction_id": "inst-0133", "generator": "small", "judge": "strong-oai", "mode": "bare", "call_index": 0, "parsed": {"holistic": 3, "confidence": 85}, "parse_ok": true, "raw": null}
 {"instruction_id": "inst-0077", "generator": "small", "judge": "strong-oai", "mode": "bare", "call_index": 0, "parsed": {"holistic": 5, "confidence": 95}, "parse_ok": true, "raw": null}
+{"instruction_id": "inst-0060", "generator": "mid", "judge": "strong-oai", "mode": "bare", "call_index": 0, "parsed": {"holistic": 4, "confidence": 80}, "parse_ok": true, "raw": null}
