@@ -1,5 +1,10 @@
 # llm-judge-audit
 
+> **Status (2026-09-25): work in progress.** Data collection is ongoing
+> (720 responses, 4,479 judgments so far); the analysis and `REPORT.md` have
+> not been written. Treat everything below as the pre-registered design, not
+> as results.
+
 How trustworthy is LLM-as-judge? A pre-registered audit of judge models on
 instruction-following evaluation — agreement with human gold labels,
 position/length/self-preference biases, confidence calibration, noise floor —
